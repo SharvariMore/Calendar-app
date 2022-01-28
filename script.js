@@ -4,3 +4,44 @@ let events = localStorage.getItem('events') ? JSON.parse(localStorage.getItem('e
 
 const calendar = document.getElementById('calendar');
 const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+function load()
+{
+    const date = new Date();
+
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+
+    const firstDayOfMonth = new Date(year, month, 1);   //1st day in current month
+    const daysInMonth = new Date(year, month + 1, 0).getDate();   //last day in previous month
+
+    const dateString = firstDayOfMonth.toLocaleDateString('en-us', {  
+        weekday: 'long',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+    });                                              //get weekday of that month's date
+
+    const paddingDays = weekdays.indexOf(dateString.split(',')[0]);  //calculate total no. of weekdays before present weekday
+    
+    //adding sqaure boxes for each days
+    for (let i = 0; i <= paddingDays + daysInMonth; i++) {
+        const daySquare = document.createElement('div');
+        daySquare.classList.add('day');
+
+        if (i > paddingDays) {
+           daySquare.innerText = i - paddingDays;  //display no of padding days
+           
+           daySquare.addEventListener('click', () => console.log('click'));
+        } else {
+            daySquare.classList.add('padding');
+        }
+
+        calendar.appendChild(daySquare);
+        
+    }
+
+}
+
+load();
