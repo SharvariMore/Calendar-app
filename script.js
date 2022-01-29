@@ -9,6 +9,10 @@ function load()
 {
     const date = new Date();
 
+    if (nav!==0) {
+        date.setMonth(new Date().getMonth() + nav);
+    }
+
     const day = date.getDate();
     const month = date.getMonth();
     const year = date.getFullYear();
@@ -24,6 +28,11 @@ function load()
     });                                              //get weekday of that month's date
 
     const paddingDays = weekdays.indexOf(dateString.split(',')[0]);  //calculate total no. of weekdays before present weekday
+
+    document.getElementById('monthDisplay').innerText = 
+    `${date.toLocaleDateString('en-us', {month: 'long'})} ${year}`;  //display month & year
+
+    calendar.innerHTML = '';  //wipeout all padding in between
     
     //adding sqaure boxes for each days
     for (let i = 0; i <= paddingDays + daysInMonth; i++) {
@@ -38,10 +47,23 @@ function load()
             daySquare.classList.add('padding');
         }
 
-        calendar.appendChild(daySquare);
-        
+        calendar.appendChild(daySquare);   
     }
-
 }
+
+function initButtons() 
+{
+    document.getElementById('nextButton').addEventListener('click', () => {
+    nav++;
+    load();
+    });
+
+    document.getElementById('backButton').addEventListener('click', () => {
+    nav--;
+    load();
+    });
+}
+
+initButtons();
 
 load();
